@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todo</title>
+    <style>
+      .task {
+        display: flex;
+      }
+      .Select {
+        font-size: 24rpx;
+        color: #333;
+        text-decoration: line-through;
+        padding-left: 12rpx;
+      }
+      .box {
+        width: 100px;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>今天做点什么</h3>
+    <input type="text" placeholder="买牛奶" />
+    <div id="list"></div>
+    <script>
+      let input = document.querySelector("input");
+      let list = document.getElementById("list");
+      input.addEventListener("keydown", add);
+      function add() {
+        let keyCode = window.event.keyCode;
+        if (keyCode == 13) {
+          // 创建
+          let div = document.createElement("div");
+          let divs = document.createElement("div");
+          let btn = document.createElement("button");
+          let checkbox = document.createElement("input");
+          list.appendChild(divs);
+          divs.appendChild(checkbox);
+          divs.appendChild(div);
+          divs.appendChild(btn);
+          divs.classList.add("task");
+          div.classList.add("box");
+          btn.innerHTML = "删除";
+          checkbox.type = "checkbox";
+          div.innerHTML = input.value;
+          // 删除功能
+          btn.addEventListener("click", () => {
+            list.removeChild(divs);
+          });
+          // 选中功能
+          checkbox.addEventListener("change", () => {
+            if (div.classList.contains("Select")) {
+              div.classList.remove('Select')
+            } else {
+                 div.classList.add("Select");
+            }
+          });
+          // 清空表单
+          input.value = "";
+        }
+      }
+    </script>
+  </body>
+</html>
