@@ -17,7 +17,11 @@
       }
       .box {
         width: 100px;
-        height: 20px;
+      }
+      .btn {
+        width: 50px;
+        height: 30px;
+        text-align: center;
       }
     </style>
   </head>
@@ -25,14 +29,20 @@
     <h3>今天做点什么</h3>
     <input type="text" placeholder="买牛奶" />
     <div id="list"></div>
+    <div id="base"></div>
     <script>
+      let num = 0;
+      let num2 = 0;
+      let aaa = false;
       let input = document.querySelector("input");
       let list = document.getElementById("list");
+      let base = document.getElementById("base");
       input.addEventListener("keydown", add);
       function add() {
         let keyCode = window.event.keyCode;
         if (keyCode == 13) {
           // 创建
+          num++;
           let div = document.createElement("div");
           let divs = document.createElement("div");
           let btn = document.createElement("button");
@@ -43,21 +53,42 @@
           divs.appendChild(btn);
           divs.classList.add("task");
           div.classList.add("box");
+          btn.classList.add("btn");
           btn.innerHTML = "删除";
           checkbox.type = "checkbox";
           div.innerHTML = input.value;
           // 删除功能
           btn.addEventListener("click", () => {
             list.removeChild(divs);
+            if (aaa==true) {
+              num2--;
+            } else {
+              num--;
+            }
+            base.innerHTML = `<b>还剩${num}个</b>任务。清除${num2}个已完成的任务`;
           });
           // 选中功能
-          checkbox.addEventListener("change", () => {
+          checkbox.addEventListener("click", () => {
             if (div.classList.contains("Select")) {
-              div.classList.remove('Select')
+              aaa = false;
+              div.classList.remove("Select");
+              if (!aaa) {
+                num++;
+                num2--;
+              }
+              base.innerHTML = `<b>还剩${num}个</b>任务。清除${num2}个已完成的任务`;
             } else {
-                 div.classList.add("Select");
+              aaa = true;
+              div.classList.add("Select");
+              if (aaa) {
+                num--;
+                num2++;
+              }
+              base.innerHTML = `<b>还剩${num}个</b>任务。清除${num2}个已完成的任务`;
             }
+            console.log(aaa);
           });
+          base.innerHTML = `<b>还剩${num}个</b>任务。清除${num2}个已完成的任务`;
           // 清空表单
           input.value = "";
         }
