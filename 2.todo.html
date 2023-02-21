@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todo</title>
+    <style>
+      .task {
+        list-style: none;
+        padding-left: 0px;
+      }
+      .list {
+        width: 200px;
+      }
+      .Select {
+        font-size: 24rpx;
+        color: #333;
+        text-decoration: line-through;
+        padding-left: 12rpx;
+      }
+      .box {
+        width: 100px;
+      }
+      .btn {
+        width: 50px;
+        height: 30px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>今天做点什么</h3>
+    <input type="text" placeholder="买牛奶" />
+    <ul id="list" class="task"></ul>
+    <div id="base"></div>
+    <script>
+      let input = document.querySelector("input");
+      let list = document.getElementById("list");
+      let base = document.getElementById("base");
+      let lists = [
+      ];
+      input.addEventListener("keyup", add);
+
+      function add() {
+        if (!input.value == "") {
+          //渲染/
+          let progressTemplate = "";
+          let keyCode = window.event.keyCode;
+          if (keyCode == 13) {
+            // 新增
+            let id = lists.length ? lists[lists.length - 1].id + 1 : 100;
+            lists.push({ id, name: input.value, Dome: false });
+            // console.log(lists);
+            //   渲染/
+            for (let i = 0; i < lists.length; i++) {
+              progressTemplate +=
+                "<li><div><input type='checkbox'></input>" +
+                lists[i].name +
+                "<button id=" +
+                lists[i].id +
+                ">" +
+                "删除" +
+                "</button></div></li>";
+              list.innerHTML = progressTemplate;
+              let btn =document.querySelectorAll('button')
+              for(let j=0;j<btn.length;j++){
+               btn[j].addEventListener('click',()=>{
+            
+                console.log(btn[j].id,lists[i].id);
+
+               })            
+                }
+            }
+            // 清空input
+            input.value = "";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
