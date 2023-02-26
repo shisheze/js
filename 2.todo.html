@@ -35,70 +35,64 @@
     <ul id="list" class="task"></ul>
     <div id="base"></div>
     <script>
-      let input = document.querySelector("input");
-      let list = document.getElementById("list");
-      let base = document.getElementById("base");
+      const input = document.querySelector("input");
+      const list = document.getElementById("list");
+      const base = document.getElementById("base");
+
       let lists = [];
       let num = 0;
+      let id = 100;
       input.addEventListener("keyup", add);
       function subject() {
         let progressTemplate = "";
         for (let i = 0; i < lists.length; i++) {
-          progressTemplate +=
-            "<li><div><input type='checkbox' class='inp' " +
-            lists[i].Dome +
-            "></input>" +
-            lists[i].name +
-            "<button id=" +
-            lists[i].id +
-            ">" +
-            "删除" +
-            "</button></div></li>";
+          progressTemplate += `<li><input type='checkbox' class='inp' ${lists[i].Select}> <span>${lists[i].name}</span><button id=${lists[i].id}>删除</button></li>`;
         }
         return progressTemplate;
       }
+      function stat() {
+        console.log(lists);
+        base.innerHTML = `<b>还剩${num}个</b>任务。清除${num}个已完成的任务`;
+      }
       function add() {
-        if (!input.value == "") {
-          let keyCode = window.event.keyCode;
-          if (keyCode == 13) {
-            num = lists.length + 1;
-            console.log(num);
-            // 新增
-            let id = lists.length ? lists[lists.length - 1].id + 1 : 100;
-            lists.push({ id, name: input.value, Dome: "" });
-            // 渲染/
-            list.innerHTML = subject();
-            // 清空input
-            input.value = "";
-
-            base.innerHTML = `<b>还剩${num}个</b>任务。清除${num}个已完成的任务`;
-          }
+        if (input.value && window.event.keyCode == 13) {
+          // 新增
+          lists.push({ id: id++, name: input.value, Select: "" });
+          // 渲染/
+          list.innerHTML = subject();
+          const lis = document.querySelectorAll("li");
           // 删除
-          let btn = document.querySelectorAll("button");
-          let lis = document.querySelectorAll("li");
+          const btn = document.querySelectorAll("button");
+
           for (let i = 0; i < btn.length; i++) {
             btn[i].addEventListener("click", () => {
               lists = lists.filter((item) => {
                 return item.id != btn[i].id;
               });
               list.removeChild(lis[i]);
-              console.log(lists);
-              base.innerHTML = `<b>还剩${num}个</b>任务。清除${num}个已完成的任务`;
+              stat();
             });
           }
           // 选中
-          let inp = document.querySelectorAll(".inp");
+          const inp = document.querySelectorAll(".inp");
+          const span = document.querySelectorAll("span");
           for (let i = 0; i < lists.length; i++) {
-            inp[i].addEventListener("click", () => {
-              if (lists[i].Dome == "checked") {
-                inp[i].Dome = "";
-                 base.innerHTML = `<b>还剩${num}个</b>任务。清除${num}个已完成的任务`;
+            inp[i].addEventListener("click", (event) => {
+              lists[i].checked = event.target.checked;
+              if (lists[i].checked) {
+                lists[i].Select = "checked";
+                list.innerHTML = subject();
+                span[i].classList.add("Select");
               } else {
-                lists[i].Dome = "checked";
-                 base.innerHTML = `<b>还剩${num}个</b>任务。清除${num}个已完成的任务`;
+                lists[i].Select = "";
+                span[i].classList.remove("Select");
               }
+              console.log(lists[i].checked, lis);
             });
           }
+          // 清空input
+          input.value = "";
+          stat();
         }
       }
     </script>
