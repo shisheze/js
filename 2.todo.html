@@ -38,7 +38,6 @@
       const input = document.querySelector("input");
       const list = document.getElementById("list");
       const base = document.getElementById("base");
-
       let lists = [];
       let num = 0;
       let id = 100;
@@ -46,13 +45,15 @@
       function subject() {
         let progressTemplate = "";
         for (let i = 0; i < lists.length; i++) {
-          progressTemplate += `<li>
-            <input type='checkbox' class='inp' ${lists[i].Select}> 
-            <span class='${lists[i].thread}'>
-              ${lists[i].name}
-            </span>
+          if (lists[i].checked) {
+            lists[i].checked = "checked";
+          }
+          progressTemplate += `
+          <li>
+            <input type='checkbox' class='inp'${lists[i].checked}> 
+            <span class='${lists[i].checked ? "Select" : false}'>${lists[i].name}</span>
             <button id=${lists[i].id}>删除</button>
-            </li>`;
+          </li>`;
         }
         return progressTemplate;
       }
@@ -63,7 +64,7 @@
       function add() {
         if (input.value && window.event.keyCode == 13) {
           // 新增
-          lists.push({ id: id++, name: input.value, Select: "", thread: "" });
+          lists.push({ id: id++, name: input.value, checked: false });
           // 渲染/
           list.innerHTML = subject();
           // 删除
@@ -84,18 +85,7 @@
             let span = document.querySelectorAll("span");
             inp[i].addEventListener("click", (event) => {
               lists[i].checked = event.target.checked;
-              console.log(1);
-              if (lists[i].checked) {
-                lists[i].Select = "checked";
-                lists[i].thread = "Select";
-                list.innerHTML = subject();
-                console.log(lists[i], span[i]);
-              } else {
-                lists[i].Select = "";
-                lists[i].thread = "";
-                list.innerHTML = subject();
-              }
-              console.log(lists[i].checked, lists);
+              list.innerHTML = subject();
             });
           }
           // 清空input
