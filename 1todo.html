@@ -60,7 +60,7 @@
           // 删除功能
           btn.addEventListener("click", () => {
             list.removeChild(divs);
-            if (aaa==true) {
+            if (aaa == true) {
               num2--;
             } else {
               num--;
@@ -91,6 +91,18 @@
           base.innerHTML = `<b>还剩${num}个</b>任务。清除${num2}个已完成的任务`;
           // 清空表单
           input.value = "";
+        }
+      }
+      let arr = 10;
+      let numss = [];
+      if (arr < 10) {
+        console.log(1);
+      } else {
+        for (let i = 0; i < arr+1; i++) {
+          if(true){
+            numss.push(i)
+            console.log(10/i);
+          }
         }
       }
     </script>

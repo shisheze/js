@@ -42,11 +42,17 @@
       let lists = [];
       let num = 0;
       let id = 100;
-      input.addEventListener("keyup", add);
+      input.addEventListener("keydown", add);
       function subject() {
         let progressTemplate = "";
         for (let i = 0; i < lists.length; i++) {
-          progressTemplate += `<li><input type='checkbox' class='inp' ${lists[i].Select}> <span>${lists[i].name}</span><button id=${lists[i].id}>删除</button></li>`;
+          progressTemplate += `<li>
+            <input type='checkbox' class='inp' ${lists[i].Select}> 
+            <span class='${lists[i].thread}'>
+              ${lists[i].name}
+            </span>
+            <button id=${lists[i].id}>删除</button>
+            </li>`;
         }
         return progressTemplate;
       }
@@ -57,13 +63,12 @@
       function add() {
         if (input.value && window.event.keyCode == 13) {
           // 新增
-          lists.push({ id: id++, name: input.value, Select: "" });
+          lists.push({ id: id++, name: input.value, Select: "", thread: "" });
           // 渲染/
           list.innerHTML = subject();
-          const lis = document.querySelectorAll("li");
           // 删除
           const btn = document.querySelectorAll("button");
-
+          const lis = document.querySelectorAll("li");
           for (let i = 0; i < btn.length; i++) {
             btn[i].addEventListener("click", () => {
               lists = lists.filter((item) => {
@@ -75,19 +80,22 @@
           }
           // 选中
           const inp = document.querySelectorAll(".inp");
-          const span = document.querySelectorAll("span");
           for (let i = 0; i < lists.length; i++) {
+            let span = document.querySelectorAll("span");
             inp[i].addEventListener("click", (event) => {
               lists[i].checked = event.target.checked;
+              console.log(1);
               if (lists[i].checked) {
                 lists[i].Select = "checked";
+                lists[i].thread = "Select";
                 list.innerHTML = subject();
-                span[i].classList.add("Select");
+                console.log(lists[i], span[i]);
               } else {
                 lists[i].Select = "";
-                span[i].classList.remove("Select");
+                lists[i].thread = "";
+                list.innerHTML = subject();
               }
-              console.log(lists[i].checked, lis);
+              console.log(lists[i].checked, lists);
             });
           }
           // 清空input
