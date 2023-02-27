@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+  </head>
+  <body>
+    <input type="text" placeholder="买牛奶" />
+    <div class="maxbox"></div>
+    <div class="base"></div>
+    <script>
+      const input = document.querySelector("input");
+      let maxbox = document.querySelector(".maxbox");
+      const base = document.querySelector(".base");
+      let list = [];
+      //
+      function add(value) {
+        let twig = {
+          id: Date.parse(new Date()) - 1677480000000,
+          twig: value,
+          checked: false,
+        };
+        list.push(twig);
+      }
+      input.addEventListener("keyup", () => {
+        if (input.value && window.event.keyCode == 13) {
+          add(input.value);
+          input.value = "";
+          showlist();
+        }
+      });
+      function showlist() {
+        maxbox.innerHTML = "";
+        let ClassSelect = "checked";
+        list.forEach((itme) => {
+          maxbox.innerHTML += `
+        <div>
+            <input type='checkbox' oninput=Selent("${itme}") ${
+            ClassSelect ? itme.checked : false
+          }>
+            <span>${itme.twig}</span>
+            <button onclick=delet('${itme.id}')>删除</button>
+       </div>
+        `;
+        });
+      }
+      function delet(id) {
+        list = list.filter((item) => {
+          return item.id != id;
+        });
+        showlist();
+      }
+      function Selent(item) {
+        if (item.checked) {
+          item.checked = true;
+        } else {
+          item.checked = false;
+        }
+        showlist();
+      }
+    </script>
+  </body>
+</html>
