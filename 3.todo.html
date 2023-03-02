@@ -5,7 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-
+    <style>
+      .Select {
+        font-size: 24rpx;
+        color: #333;
+        text-decoration: line-through;
+        padding-left: 12rpx;
+      }
+    </style>
   </head>
   <body>
     <input type="text" placeholder="买牛奶" />
@@ -14,17 +21,19 @@
     <script>
       const input = document.querySelector("input");
       let maxbox = document.querySelector(".maxbox");
-      const base = document.querySelector(".base");
+      let base = document.querySelector(".base");
       let list = [];
-      //
+      let num = 0;
+      //创建列表
       function add(value) {
         let twig = {
-          id: Date.parse(new Date()) - 1677480000000,
+          id: Date.parse(new Date()) - 1677481050108,
           twig: value,
           checked: false,
         };
         list.push(twig);
       }
+      //   回车
       input.addEventListener("keyup", () => {
         if (input.value && window.event.keyCode == 13) {
           add(input.value);
@@ -32,34 +41,43 @@
           showlist();
         }
       });
+      //   渲染
       function showlist() {
         maxbox.innerHTML = "";
-        let ClassSelect = "checked";
+        let arr = list.filter((item) => {
+          return item.checked === true;
+        });
+        let arrs = list.filter((item) => {
+          return item.checked === false;
+        });
         list.forEach((itme) => {
           maxbox.innerHTML += `
         <div>
-            <input type='checkbox' oninput=Selent("${itme}") ${
-            ClassSelect ? itme.checked : false
-          }>
-            <span>${itme.twig}</span>
+            <input type='checkbox' onchange=Selent(${itme.id},${
+            itme.checked
+          }) ${itme.checked ? "checked" : ""}>
+            <span  class="${itme.checked ? "Select" : ""}">${itme.twig}</span>
             <button onclick=delet('${itme.id}')>删除</button>
        </div>
         `;
         });
+        base.innerHTML = ` <div class="base"><b>还剩${arrs.length}个</b>任务。清除${arr.length}个已完成的任务</div>`;
       }
+      //  删除
       function delet(id) {
         list = list.filter((item) => {
           return item.id != id;
         });
         showlist();
       }
-      function Selent(item) {
-        if (item.checked) {
-          item.checked = true;
-        } else {
-          item.checked = false;
+      //   选中
+      function Selent(id, checked) {
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].id === id) {
+            list[i].checked = !list[i].checked;
+            showlist();
+          }
         }
-        showlist();
       }
     </script>
   </body>
