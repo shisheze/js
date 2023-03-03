@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 2000px;
+        height: 2000px;
+        background-color: #d1b08a;
+      }
+      .checkerboard {
+        width: 558px;
+        height: 558px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 10px;
+        border: 1px solid #000;
+        border-top: 2px solid #000;
+        border-left: 2px solid #000;
+      }
+      .box {
+        width: 30px;
+        height: 30px;
+        border-right: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+      .English {
+        display: flex;
+        margin-left: 16px;
+      }
+      .Englishright {
+        width: 30px;
+        text-align: center;
+        padding-right: 1px;
+      }
+      .checkerboards {
+        display: flex;
+        
+      }
+      .mathematics {
+        margin-top: -10px;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+      .mathematicsTop {
+        height: 30px;
+        text-align: center;
+        padding-bottom: 1px;
+      }
+      .Englishs {
+        margin-top: -20px;
+      }
+      .dots {
+        width: 5px;
+        height: 5px;
+        background-color: #000;
+        border-radius: 50%;
+        position: absolute;
+      }
+      .dot {
+        top: 121px;
+        left: 129px;
+      }
+      .dot2 {
+        top: 307px;
+        left: 129px;
+      }
+      .dot3 {
+        top: 493px;
+        left: 129px;
+      }
+      .dot4 {
+        top: 121px;
+        left: 284px;
+      }
+      .dot5 {
+        top: 121px;
+        left: 470px;
+      }
+      .dot6 {
+        top: 307px;
+        left: 470px;
+      }
+      .dot7 {
+        top: 493px;
+        left: 470px;
+      }
+      .dot8 {
+        top: 493px;
+        left: 284px;
+      }
+      .dot9 {
+        top: 307px;
+        left: 284px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="English"></div>
+    <div class="checkerboards">
+      <div class="mathematics"></div>
+      <div class="checkerboard"></div>
+      <div class="mathematics"></div>
+    </div>
+    <div class="English Englishs"></div>
+    <div>
+      <div class="dots dot"></div>
+      <div class="dots dot2"></div>
+      <div class="dots dot3"></div>
+      <div class="dots dot4"></div>
+      <div class="dots dot5"></div>
+      <div class="dots dot6"></div>
+      <div class="dots dot7"></div>
+      <div class="dots dot8"></div>
+      <div class="dots dot9"></div>
+    </div>
+    <script>
+      let checkerboard = document.querySelector(".checkerboard");
+      let English = document.querySelectorAll(".English");
+      let mathematics = document.querySelectorAll(".mathematics");
+      for (let i = 0; i < 324; i++) {
+        let div = document.createElement("div");
+        checkerboard.appendChild(div);
+        div.classList.add("box");
+      }
+      for (let i = 1; i < 20; i++) {
+        let div = document.createElement("div");
+        let divs = document.createElement("div");
+        divs.classList.add("Englishright");
+        div.classList.add("mathematicsTop");
+        mathematics[0].appendChild(div);
+        English[0].appendChild(divs);
+        div.innerHTML = i;
+        divs.innerHTML = figure(i + 64);
+      }
+      for (let i = 1; i < 20; i++) {
+        let div = document.createElement("div");
+        let divs = document.createElement("div");
+        divs.classList.add("Englishright");
+        div.classList.add("mathematicsTop");
+        mathematics[1].appendChild(div);
+        English[1].appendChild(divs);
+        div.innerHTML = i;
+        divs.innerHTML = figure(i + 64);
+      }
+      function figure(e) {
+        return String.fromCharCode(e);
+      }
+    </script>
+  </body>
+</html>
