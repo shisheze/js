@@ -38,12 +38,9 @@
       }
       .checkerboards {
         display: flex;
-        
       }
       .mathematics {
         margin-top: -10px;
-        display: flex;
-        flex-direction: column-reverse;
       }
       .mathematicsTop {
         height: 30px;
@@ -96,6 +93,33 @@
         top: 307px;
         left: 284px;
       }
+      .checkerboard1 {
+        width: 600px;
+        height: 570px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: -594px;
+        margin-left: 13px;
+      }
+      .chess {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        margin-left: 4px;
+        margin-top: 3.8px;
+      }
+      .chess1 {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        background-color: #fff;
+      }
+      .chess2 {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        background-color: #000;
+      }
     </style>
   </head>
   <body>
@@ -117,15 +141,19 @@
       <div class="dots dot8"></div>
       <div class="dots dot9"></div>
     </div>
+    <div class="checkerboard1"></div>
     <script>
       let checkerboard = document.querySelector(".checkerboard");
       let English = document.querySelectorAll(".English");
       let mathematics = document.querySelectorAll(".mathematics");
+      let checkerboard1 = document.querySelector(".checkerboard1");
+      //   棋盘
       for (let i = 0; i < 324; i++) {
         let div = document.createElement("div");
         checkerboard.appendChild(div);
         div.classList.add("box");
       }
+      //   左数字，上字母
       for (let i = 1; i < 20; i++) {
         let div = document.createElement("div");
         let divs = document.createElement("div");
@@ -136,6 +164,7 @@
         div.innerHTML = i;
         divs.innerHTML = figure(i + 64);
       }
+      //  右数字 下字母
       for (let i = 1; i < 20; i++) {
         let div = document.createElement("div");
         let divs = document.createElement("div");
@@ -148,6 +177,28 @@
       }
       function figure(e) {
         return String.fromCharCode(e);
+      }
+      //   棋子
+      let num = 1;
+      let j = 0;
+      let arr = [];
+      for (let i = 1; i < 362; i++) {
+        let div = document.createElement("div");
+        div.classList.add("chess");
+        checkerboard1.appendChild(div);
+        div.addEventListener("click", () => {
+          if (!arr.includes(i)) {
+            arr.push(i)
+            if (num === 1) {
+              div.classList.add("chess2");
+              num = 2;
+            } else {
+              div.classList.add("chess1");
+              num = 1;
+            }
+          }
+
+        });
       }
     </script>
   </body>
