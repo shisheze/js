@@ -6,27 +6,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        .list{
-            width: 500px;
-            height: 160px;
-            background-color: #F8F9FA;
-        }
-        .bar{
-            display: flex;
-            justify-content: space-between;
-        }
+      body {
+        margin-left: 400px;
+      }
+      img {
+        width: 500px;
+        height: 500px;
+      }
+      .list {
+        width: 500px;
+
+        background-color: #e1eefa;
+      }
+      .bar {
+        display: flex;
+        justify-content: space-between;
+      }
+      .nums {
+        display: flex;
+      }
+      .margin {
+        margin-right: 10px;
+      }
+      .character {
+        color: red;
+        font-weight: bold;
+      }
     </style>
   </head>
-  <div></div>
   <body>
+    <input type="text" placeholder="标题" class="label" />
+    <input type="text" placeholder="订阅链接" class="interlinkage" />
+    <button>订阅</button>
+    <div class="nums"></div>
+    <div class="liss"></div>
     <script>
-      let div = document.querySelector("div");
+      let label = document.querySelector(".label");
+      let interlinkage = document.querySelector(".interlinkage");
+      let nums = document.querySelector(".nums");
+      let btn = document.querySelector("button");
+      let div = document.querySelector(".liss");
       let list = "";
+      let id = 3;
+      let arrs = [
+        {
+          id: 1,
+          name: "少年派",
+          link: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fsspai.com%2Ffeed",
+        },
+        {
+          id: 2,
+          name: "新闻",
+          link: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fhnrss.org%2Fnewest",
+        },
+      ];
+
+      btn.addEventListener("click", add);
+      function exports() {
+        for (let i in arrs) {
+          let div = document.createElement("div");
+          div.innerHTML = arrs[i].name;
+          div.classList.add("margin");
+          nums.appendChild(div);
+        }
+      }
+      //新增
+      function add() {
+        if (label.value && interlinkage.value) {
+          arrs.push({ id: id++, name: label.value, link: interlinkage.value });
+          let div = document.createElement("div");
+          div.innerHTML = label.value;
+          div.classList.add("margin");
+          nums.appendChild(div);
+          label.value = "";
+          interlinkage.value = "";
+        }
+        margin();
+      }
+      exports();
+      // 点击是切换
+      function margin() {
+        let margin = document.querySelectorAll(".margin");
+        for (let i = 0; i < margin.length; i++) {
+          let character = document.querySelector(".character");
+          margin[0].classList.add("character");
+          margin[i].addEventListener("click", () => {
+          let character = document.querySelector(".character");
+            if (!margin[i].classList.contains("character")) {
+              margin[i].classList.add("character");
+              character.classList.remove('character')
+              console.log(character);
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open("get", arrs[i].link);
+            xhr.onload = () => {
+              let jsondata = JSON.parse(xhr.responseText);
+              let arr = jsondata.items;
+              for (let i in arr) {
+                list += `
+                <div class="list">
+                    <h5>${arr[i].title}</h5>
+                    <div>${arr[i].content}</div>
+                    <div class="bar">
+                       <div>作者:${arr[i].author}</div>
+                       <div>${arr[i].pubDate}</div>
+                    </div>
+                </div> `;
+              }
+              div.innerHTML = list;
+              list = "";
+            };
+            xhr.send();
+          });
+        }
+      }
+
+      margin();
+      //   默认是少年派
       let xhr = new XMLHttpRequest();
-      xhr.open(
-        "get",
-        "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fsspai.com%2Ffeed"
-      );
+      xhr.open("get", arrs[0].link);
       xhr.onload = () => {
         let jsondata = JSON.parse(xhr.responseText);
         let arr = jsondata.items;
@@ -40,10 +138,10 @@
                 <div>${arr[i].pubDate}</div>
             </div>
          </div>
-  
          `;
         }
-        div.innerHTML=list
+        div.innerHTML = list;
+        list = "";
       };
       xhr.send();
     </script>
