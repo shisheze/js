@@ -41,14 +41,14 @@
     <div class="nums"></div>
     <div class="liss"></div>
     <script>
-      let label = document.querySelector(".label");
-      let interlinkage = document.querySelector(".interlinkage");
-      let nums = document.querySelector(".nums");
-      let btn = document.querySelector("button");
-      let div = document.querySelector(".liss");
+      const label = document.querySelector(".label");
+      const interlinkage = document.querySelector(".interlinkage");
+      const nums = document.querySelector(".nums");
+      const btn = document.querySelector("button");
+      const div = document.querySelector(".liss");
       let list = "";
       let id = 3;
-      let arrs = [
+      let arrs = JSON.parse(localStorage.getItem("arrs")) || [
         {
           id: 1,
           name: "少年派",
@@ -64,17 +64,18 @@
       btn.addEventListener("click", add);
       function exports() {
         for (let i in arrs) {
-          let div = document.createElement("div");
+          const div = document.createElement("div");
           div.innerHTML = arrs[i].name;
           div.classList.add("margin");
           nums.appendChild(div);
         }
+        saveToLocalStorage();
       }
       //新增
       function add() {
         if (label.value && interlinkage.value) {
           arrs.push({ id: id++, name: label.value, link: interlinkage.value });
-          let div = document.createElement("div");
+          const div = document.createElement("div");
           div.innerHTML = label.value;
           div.classList.add("margin");
           nums.appendChild(div);
@@ -82,54 +83,38 @@
           interlinkage.value = "";
         }
         margin();
+        saveToLocalStorage();
       }
       exports();
       // 点击是切换
       function margin() {
-        let margin = document.querySelectorAll(".margin");
+        const margin = document.querySelectorAll(".margin");
         for (let i = 0; i < margin.length; i++) {
-          let character = document.querySelector(".character");
-          margin[0].classList.add("character");
+          margin[
+            JSON.parse(localStorage.getItem("character")) || 0
+          ].classList.add("character");
           margin[i].addEventListener("click", () => {
-          let character = document.querySelector(".character");
+            const character = document.querySelector(".character");
             if (!margin[i].classList.contains("character")) {
               margin[i].classList.add("character");
-              character.classList.remove('character')
-              console.log(character);
+              character.classList.remove("character");
             }
-            let xhr = new XMLHttpRequest();
-            xhr.open("get", arrs[i].link);
-            xhr.onload = () => {
-              let jsondata = JSON.parse(xhr.responseText);
-              let arr = jsondata.items;
-              for (let i in arr) {
-                list += `
-                <div class="list">
-                    <h5>${arr[i].title}</h5>
-                    <div>${arr[i].content}</div>
-                    <div class="bar">
-                       <div>作者:${arr[i].author}</div>
-                       <div>${arr[i].pubDate}</div>
-                    </div>
-                </div> `;
-              }
-              div.innerHTML = list;
-              list = "";
-            };
-            xhr.send();
+            localStorage.setItem("character", JSON.stringify(i));
+            earlYouth(i);
           });
         }
+        saveToLocalStorage();
       }
-
       margin();
       //   默认是少年派
-      let xhr = new XMLHttpRequest();
-      xhr.open("get", arrs[0].link);
-      xhr.onload = () => {
-        let jsondata = JSON.parse(xhr.responseText);
-        let arr = jsondata.items;
-        for (let i in arr) {
-          list += `
+      function earlYouth(num) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("get", arrs[num || 0].link);
+        xhr.onload = () => {
+          const jsondata = JSON.parse(xhr.responseText);
+          const arr = jsondata.items;
+          for (let i in arr) {
+            list += `
          <div class="list">
             <h5>${arr[i].title}</h5>
             <div>${arr[i].content}</div>
@@ -139,11 +124,18 @@
             </div>
          </div>
          `;
-        }
-        div.innerHTML = list;
-        list = "";
-      };
-      xhr.send();
+          }
+          div.innerHTML = list;
+          list = "";
+        };
+        xhr.send();
+      }
+      earlYouth();
+      // 存储
+      function saveToLocalStorage() {
+        localStorage.setItem("arrs", JSON.stringify(arrs));
+      }
+      saveToLocalStorage();
     </script>
   </body>
 </html>

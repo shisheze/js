@@ -22,7 +22,7 @@
       const input = document.querySelector("input");
       let maxbox = document.querySelector(".maxbox");
       let base = document.querySelector(".base");
-      let list = [];
+      let list = JSON.parse(localStorage.getItem("list")) || [];
       let num = 0;
       //创建列表
       function add(value) {
@@ -78,6 +78,10 @@
             showlist();
           }
         }
+      }
+      // 本地缓存
+      function saveToLocalStorage() {
+        localStorage.setItem("list", JSON.stringify(list));
       }
     </script>
   </body>
