@@ -72,3 +72,29 @@ path.extname('路径')获取文件的扩展名
 
 ```
 
+# http
+
+ 
+
+```
+// 导入http模块
+const http = require("http");
+// 创建一个web服务器
+const server = http.createServer()
+
+// 响应给客户端信息然后触发request事件触发函数
+server.on('request', function (req,res) {
+    console.log('访问服务器');
+    req:请求对象
+    通过req.url可以获取客户端请求的URL地址
+    通过req.method 可以获取请求类型
+    res:想要对象
+     通过res.end向客户端发送数据
+})
+// 启动服务器 80是端口
+server.listen(80, function () {
+    console.log('启动服务器，默认访问地址127.0.0.1');
+})
+
+```
+
